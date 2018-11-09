@@ -3,6 +3,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
 import {CleanedAddressWapper} from '../shared/model/CleanedAddress';
 import {AddressService, CLEANEDADDRESS_DATA} from '../shared/service/address.service';
+import {Result} from '../shared/model/Result';
 
 
 @Component({
@@ -43,17 +44,17 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.refresh(null, '省区相同', 0);
+    this.refresh(null);
   }
 
-  refresh(event: PageEvent, tag: String, right: number) {
+  refresh(event: PageEvent) {
     let pageIdx = 1;
     let pageSize = 10;
     if (event != null) {
       pageIdx = event.pageIndex;
       pageSize = event.pageSize;
     }
-    this.addressService.listAddressByCond(tag, right, pageIdx, pageSize).subscribe((res) => {
+    this.addressService.listAddressByCond(this.tag, this.rightOptionsMap[this.rightTag], pageIdx, pageSize).subscribe((res) => {
       this.currentData = res.data;
       this.dataSource = new MatTableDataSource<CleanedAddressWapper>(this.currentData);
       this.dataSource.paginator = this.paginator;
@@ -90,8 +91,32 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
     // 按照默认的第一页和每页10个记录进行条件查询
     console.log(addressSearchForm.tag);
     console.log(addressSearchForm.right);
-    this.refresh(null, addressSearchForm.tag, this.rightOptionsMap[addressSearchForm.right]);
+    this.refresh(null);
   }
 
+  tagRight() {
+    if (this.selection.isEmpty()) {
+      console.log('选择为空');
+    } else {
+      const selectAddress: CleanedAddressWapper [] = this.selection.selected;
+      for (const address of  selectAddress) {
+        console.log('标记地址正确' + JSON.stringify(address));
+        this.addressService.tagright(address);
+      }
+    }
+  }
+
+  tagError() {
+    if (this.selection.isEmpty()) {
+      console.log('选择为空');
+    } else {
+      const selectAddress: CleanedAddressWapper [] = this.selection.selected;
+      for (const address of  selectAddress) {
+        console.log('标记地址错误' + JSON.stringify(address));
+        this.addressService.tagError(address).subscribe(
+          (res: Result) => console.log(JSON.stringify(res)));
+      }
+    }
+  }
 }
 

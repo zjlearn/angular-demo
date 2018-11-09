@@ -1,0 +1,5 @@
+.cleanInputContainer {
+  display: flex;
+  flex-direction: row;
+  border-top: 50px;
+}

@@ -6,17 +6,11 @@
 }
 
 .mat-table {
-  overflow: auto;
-  max-height: 500px;
+  max-height: 1080px;
 }
 
 .mat-column-select {
   overflow: visible;
-}
-
-.search-card {
-  display: flex;
-  flex-direction: row;
 }
 
 .cleanInputContainer {

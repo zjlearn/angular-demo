@@ -22,6 +22,26 @@ export class AddressService implements OnInit {
     return this.http.post<Result>(request_url, body);
   }
 
+  tagError(cleanAddresswapper: CleanedAddressWapper): Observable<Result> {
+    const request_url = 'http://localhost:4200/address/revise/tag/error?fullAddress=' + cleanAddresswapper.fullAddress;
+    return this.http.get<Result>(request_url);
+  }
+
+  /**
+   * 标记地址数据正确
+   * @param {CleanedAddressWapper} cleanAddresswapper
+   * @returns {Observable<Result>}
+   */
+  tagright(cleanAddresswapper: CleanedAddressWapper): Observable<Result> {
+    const fullAddressList = [];
+    fullAddressList.push(cleanAddresswapper.fullAddress);
+    const request_url = 'http://localhost:4200/address/revise/tag/right';
+    const body = {
+      'fullAddressList': fullAddressList
+    };
+    return this.http.post<Result>(request_url, body);
+  }
+
   constructor(private http: HttpClient) {
   }
 
