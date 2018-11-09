@@ -1,0 +1,21 @@
+<form class="cleanInputContainer" #cleanForm="ngForm" (submit)="cleanAddress(cleanForm.value)">
+  <mat-form-field>
+    <input matInput [(ngModel)]="fullAddress" name='fullAddress' placeholder="需要清洗的完整详细地址">
+  </mat-form-field>
+  <button mat-button type="submit">清洗</button>
+</form>
+
+<div>
+
+  <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <p>{{cleanedAddressWapper | json }}</p>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <p>{{cleanedAddressWapper.provName}}</p>
+      <p>{{cleanedAddressWapper.cityName}}</p>
+      <p>{{cleanedAddressWapper.distName}}</p>
+      <p>{{cleanedAddressWapper.townName}}</p>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

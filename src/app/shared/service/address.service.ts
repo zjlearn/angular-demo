@@ -13,6 +13,15 @@ export class AddressService implements OnInit {
     return this.http.get<Result>(request_url);
   }
 
+  cleanAddress(fullAddress: String, product: String): Observable<Result> {
+    const request_url = 'http://localhost:4200/address/v2/clean';
+    const body = {
+      'product': product,
+      'fullAddress': fullAddress
+    };
+    return this.http.post<Result>(request_url, body);
+  }
+
   constructor(private http: HttpClient) {
   }
 

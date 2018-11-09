@@ -8,18 +8,24 @@ import {HttpClientModule} from '@angular/common/http';
 import {MaterialModule} from './material/material.module';
 import {AppRoutingModule} from './app-routing.module';
 import {AddressService} from './shared/service/address.service';
+import {FormsModule} from '@angular/forms';
+import { AddressCleanComponent } from './address-clean/address-clean.component';
+import { StandardAddressComponent } from './standard-address/standard-address.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CleanRtnListComponent
+    CleanRtnListComponent,
+    AddressCleanComponent,
+    StandardAddressComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     MaterialModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [AddressService],
   bootstrap: [AppComponent]

@@ -12,8 +12,15 @@ import {AddressService, CLEANEDADDRESS_DATA} from '../shared/service/address.ser
 })
 export class CleanRtnListComponent implements OnInit, AfterViewInit {
 
-  tags: string[] = ['省或者市不同', '省区相同', '市区相同', '其他'];
-  rightList: string[] = ['未知', '正确', '错误'];
+  tagOptions: string[] = ['省或者市不同', '省区相同', '市区相同', '其他'];
+
+  rightOptionsMap: { [key: string]: number; } = {
+    '错误': -1,
+    '未知': 0,
+    '正确': 1
+  };
+
+  rightOptions: string[] = ['未知', '正确', '错误'];
 
   displayedColumns: string[] = ['select', 'fullAddress', 'provName', 'cityName', 'distName', 'townName'];
 
@@ -22,11 +29,12 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
   dataSource = null;
   selection = new SelectionModel<CleanedAddressWapper>(true, []);
 
-  tag = '省区相同';
-  right = 0;
 
   // MatPaginator Output
   pageEvent: PageEvent;
+
+  tag: String = '省区相同';
+  rightTag: String = '未知';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -35,17 +43,17 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.refresh(null);
+    this.refresh(null, '省区相同', 0);
   }
 
-  refresh(event: PageEvent) {
+  refresh(event: PageEvent, tag: String, right: number) {
     let pageIdx = 1;
     let pageSize = 10;
     if (event != null) {
       pageIdx = event.pageIndex;
       pageSize = event.pageSize;
     }
-    this.addressService.listAddressByCond(this.tag, this.right, pageIdx, pageSize).subscribe((res) => {
+    this.addressService.listAddressByCond(tag, right, pageIdx, pageSize).subscribe((res) => {
       this.currentData = res.data;
       this.dataSource = new MatTableDataSource<CleanedAddressWapper>(this.currentData);
       this.dataSource.paginator = this.paginator;
@@ -78,10 +86,12 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
   /**
    * 根据条件重新查询相关的信息
    */
-  search() {
+  search(addressSearchForm) {
     // 按照默认的第一页和每页10个记录进行条件查询
-    this.refresh(null);
+    console.log(addressSearchForm.tag);
+    console.log(addressSearchForm.right);
+    this.refresh(null, addressSearchForm.tag, this.rightOptionsMap[addressSearchForm.right]);
   }
-}
 
+}
 

@@ -4,8 +4,20 @@
     欢迎使用 {{ title }}!
   </h1>
 </div>
-<a routerLink="result/list">结果列表查询</a>
-<a routerLink="result/list">地址结果更新</a>
-<router-outlet></router-outlet>
+
+
+<mat-tab-group>
+  <mat-tab label="地址清洗">
+    <app-address-clean></app-address-clean>
+  </mat-tab>
+  <mat-tab label="清洗结果审核">
+    <app-clean-rtn-list></app-clean-rtn-list>
+  </mat-tab>
+  <mat-tab label="地址库查询">
+    <app-standard-address></app-standard-address>
+  </mat-tab>
+</mat-tab-group>
+
+
 
 
