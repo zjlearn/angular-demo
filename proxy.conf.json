@@ -1,0 +1,7 @@
+{
+  "/address": {
+    "target": "http://address.clean.test.you.163.com",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
