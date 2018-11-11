@@ -20,7 +20,6 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
     '未知': 0,
     '正确': 1
   };
-
   rightOptions: string[] = ['未知', '正确', '错误'];
 
   displayedColumns: string[] = ['select', 'fullAddress', 'provName', 'cityName', 'distName', 'townName'];
@@ -33,6 +32,8 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
 
   // MatPaginator Output
   pageEvent: PageEvent;
+
+  pageTotal = 1000;
 
   tag: String = '省区相同';
   rightTag: String = '未知';
@@ -54,15 +55,16 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
       pageIdx = event.pageIndex;
       pageSize = event.pageSize;
     }
-    this.addressService.listAddressByCond(this.tag, this.rightOptionsMap[this.rightTag], pageIdx, pageSize).subscribe((res) => {
+    this.addressService.listAddressByCond(this.tag, this.rightOptionsMap[this.rightTag.repeat(1)], pageIdx, pageSize).subscribe((res) => {
       this.currentData = res.data;
       this.dataSource = new MatTableDataSource<CleanedAddressWapper>(this.currentData);
+      this.paginator._length = 1000;
       this.dataSource.paginator = this.paginator;
       console.log('数据的大小为:' + this.currentData.length);
     });
   }
 
-  /**
+  /**¬
    * Set the paginator after the view init since this component will
    * be able to query its view for the initialized paginator.
    */

@@ -1,95 +1,93 @@
-<mat-card class="search-card">
-  <mat-card-title>
-    筛选查询
-  </mat-card-title>
-  <mat-card-content>
-    <form #addressSearchForm="ngForm" (submit)="search(addressSearchForm.value)">
-      <mat-form-field>
-        <mat-select [(ngModel)]="tag" name='tag' placeholder="清洗结果标签">
-          <mat-option *ngFor="let tag of tagOptions" [value]="tag">{{tag}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+<div id="main">
+  <div class="g-ctn">
+    <mat-card class="search-card">
+      <mat-card-title>
+        筛选查询
+      </mat-card-title>
+      <mat-card-content>
+        <form #addressSearchForm="ngForm" (submit)="search(addressSearchForm.value)">
+          <mat-form-field>
+            <mat-select [(ngModel)]="tag" name='tag' placeholder="清洗结果标签">
+              <mat-option *ngFor="let tag of tagOptions" [value]="tag">{{tag}}</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-      <mat-form-field>
-        <mat-select placeholder="正确性" [(ngModel)]="rightTag" name='right'>
-          <mat-option *ngFor="let right of rightOptions" [value]="right">{{right}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-button type="submit">搜索</button>
-    </form>
-    <button mat-button (click)="tagRight()">标记所选地址清洗正确</button>
-    <button mat-button (click)="tagError()">标记所选地址错误</button>
-  </mat-card-content>
-</mat-card>
+          <mat-form-field>
+            <mat-select placeholder="正确性" [(ngModel)]="rightTag" name='right'>
+              <mat-option *ngFor="let right of rightOptions" [value]="right">{{right}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button color="primary"  type="submit">搜索</button>
+          <button mat-raised-button color="accent" (click)="tagRight()">标记所选地址清洗正确</button>
+          <button mat-raised-button color="warn" (click)="tagError()">标记所选地址错误</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-<div class="example-container mat-elevation-z8">
-  <p>查询结果</p>
-  <mat-table #table [dataSource]="dataSource">
+  <div class="g-ctn">
+    <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
 
-    <!-- Checkbox Column -->
-    <ng-container matColumnDef="select">
-      <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()">
-        </mat-checkbox>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()"
-                      (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)">
-        </mat-checkbox>
-      </mat-cell>
-    </ng-container>
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="fullAddress">
-      <mat-header-cell *matHeaderCellDef>原始地址</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.fullAddress}}</mat-cell>
-    </ng-container>
+      <!-- Position Column -->
+      <ng-container matColumnDef="fullAddress">
+        <mat-header-cell *matHeaderCellDef>原始地址</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.fullAddress}}</mat-cell>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="provName">
-      <mat-header-cell *matHeaderCellDef>省</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.address.provName}}</mat-cell>
-    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="provName">
+        <mat-header-cell *matHeaderCellDef>省</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.address.provName}}</mat-cell>
+      </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="cityName">
-      <mat-header-cell *matHeaderCellDef>市</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.address.cityName}}</mat-cell>
-    </ng-container>
+      <!-- Weight Column -->
+      <ng-container matColumnDef="cityName">
+        <mat-header-cell *matHeaderCellDef>市</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.address.cityName}}</mat-cell>
+      </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="distName">
-      <mat-header-cell *matHeaderCellDef>区</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.address.distName}}</mat-cell>
-    </ng-container>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="distName">
+        <mat-header-cell *matHeaderCellDef>区</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.address.distName}}</mat-cell>
+      </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="townName">
-      <mat-header-cell *matHeaderCellDef>镇</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.address.townName}}</mat-cell>
-    </ng-container>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="townName">
+        <mat-header-cell *matHeaderCellDef>镇</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.address.townName}}</mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"
-             (click)="selection.toggle(row)">
-    </mat-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"
+               (click)="selection.toggle(row)">
+      </mat-row>
 
-  </mat-table>
+    </mat-table>
 
-  <!--分页的模型信息-->
-  <mat-paginator #paginator
-                 [length]=""
-                 [pageSize]="10"
-                 [pageSizeOptions]="[10, 20,50]"
-                 [showFirstLastButtons]="true"
-                 (page)="refresh($event)">
-  </mat-paginator>
+    <!--分页的模型信息-->
+    <mat-paginator #paginator
+                   [pageSize]="10"
+                   [pageSizeOptions]="[10, 20,50]"
+                   [showFirstLastButtons]="true"
+                   (page)="refresh($event)">
+    </mat-paginator>
+  </div>
 </div>
-
-
-
-
 

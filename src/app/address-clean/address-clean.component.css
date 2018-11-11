@@ -1,5 +1,7 @@
-.cleanInputContainer {
-  display: flex;
-  flex-direction: row;
-  border-top: 50px;
+.cleanInputContainer  mat-form-field {
+  width: 1080px;
+}
+
+.cleanInputContainer button {
+  width: auto;
 }
