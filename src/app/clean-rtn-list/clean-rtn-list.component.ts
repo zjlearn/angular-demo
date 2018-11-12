@@ -13,7 +13,7 @@ import {Result} from '../shared/model/Result';
 })
 export class CleanRtnListComponent implements OnInit, AfterViewInit {
 
-  tagOptions: string[] = ['省或者市不同', '省区相同', '市区相同', '其他'];
+  tagOptions: string[] = ['区不同', '省区相同', '市区相同', '其他情况', '省市不相同'];
 
   rightOptionsMap: { [key: string]: number; } = {
     '错误': -1,
@@ -56,10 +56,9 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
       pageSize = event.pageSize;
     }
     this.addressService.listAddressByCond(this.tag, this.rightOptionsMap[this.rightTag.repeat(1)], pageIdx, pageSize).subscribe((res) => {
-      this.currentData = res.data;
+      this.currentData = res.data.result;
       this.dataSource = new MatTableDataSource<CleanedAddressWapper>(this.currentData);
-      this.paginator._length = 1000;
-      this.dataSource.paginator = this.paginator;
+      this.paginator.length = res.data.pagination.total;
       console.log('数据的大小为:' + this.currentData.length);
     });
   }

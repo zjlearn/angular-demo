@@ -11,6 +11,7 @@ import {AddressService} from './shared/service/address.service';
 import {FormsModule} from '@angular/forms';
 import { AddressCleanComponent } from './address-clean/address-clean.component';
 import { StandardAddressComponent } from './standard-address/standard-address.component';
+import { AddressSuggestComponent } from './address-suggest/address-suggest.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { StandardAddressComponent } from './standard-address/standard-address.co
     AppComponent,
     CleanRtnListComponent,
     AddressCleanComponent,
-    StandardAddressComponent
+    StandardAddressComponent,
+    AddressSuggestComponent
   ],
   imports: [
     BrowserModule,
