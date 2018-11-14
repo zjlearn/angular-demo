@@ -2,8 +2,8 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator, MatTableDataSource, PageEvent} from '@angular/material';
 import {CleanedAddressWapper} from '../shared/model/CleanedAddress';
-import {AddressService, CLEANEDADDRESS_DATA} from '../shared/service/address.service';
 import {Result} from '../shared/model/Result';
+import {AddressService} from '../shared/service/address.service';
 
 
 @Component({
@@ -100,10 +100,7 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
       console.log('选择为空');
     } else {
       const selectAddress: CleanedAddressWapper [] = this.selection.selected;
-      for (const address of  selectAddress) {
-        console.log('标记地址正确' + JSON.stringify(address));
-        this.addressService.tagright(address);
-      }
+      this.addressService.tagright(selectAddress);
     }
   }
 
@@ -117,6 +114,17 @@ export class CleanRtnListComponent implements OnInit, AfterViewInit {
         this.addressService.tagError(address).subscribe(
           (res: Result) => console.log(JSON.stringify(res)));
       }
+    }
+  }
+
+  recompute() {
+    if (this.selection.isEmpty()) {
+      console.log('选择的地址为空');
+    } else {
+      const selectAddress: CleanedAddressWapper [] = this.selection.selected;
+      console.log('重新清洗的地址' + JSON.stringify(selectAddress));
+      this.addressService.recompute(selectAddress).subscribe(
+        (res: Result) => console.log(JSON.stringify(res)));
     }
   }
 }

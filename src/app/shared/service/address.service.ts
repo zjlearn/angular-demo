@@ -7,14 +7,17 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class AddressService implements OnInit {
 
+  // address_server = 'http://localhost:4200';
+  address_server = 'http://address.clean.test.you.163.com';
+
   listAddressByCond(tag: String, right: number, pageIdx: number, pageSize: number): Observable<any> {
-    const request_url = 'http://localhost:4200/address/revise/cleanRtn/list.json?' + 'right=' + right + '&tag='
+    const request_url = this.address_server + '/address/revise/cleanRtn/list.json?' + 'right=' + right + '&tag='
       + tag + '&pageIdx=' + pageIdx + '&pageSize=' + pageSize;
     return this.http.get<Result>(request_url);
   }
 
   cleanAddress(fullAddress: String, product: String): Observable<Result> {
-    const request_url = 'http://localhost:4200/address/v2/clean';
+    const request_url = this.address_server + '/address/v2/clean';
     const body = {
       'product': product,
       'fullAddress': fullAddress
@@ -23,7 +26,7 @@ export class AddressService implements OnInit {
   }
 
   tagError(cleanAddresswapper: CleanedAddressWapper): Observable<Result> {
-    const request_url = 'http://localhost:4200/address/revise/tag/error?fullAddress=' + cleanAddresswapper.fullAddress;
+    const request_url = this.address_server + '/address/revise/tag/error?fullAddress=' + cleanAddresswapper.fullAddress;
     return this.http.get<Result>(request_url);
   }
 
@@ -32,12 +35,28 @@ export class AddressService implements OnInit {
    * @param {CleanedAddressWapper} cleanAddresswapper
    * @returns {Observable<Result>}
    */
-  tagright(cleanAddresswapper: CleanedAddressWapper): Observable<Result> {
-    const fullAddressList = [];
-    fullAddressList.push(cleanAddresswapper.fullAddress);
-    const request_url = 'http://localhost:4200/address/revise/tag/right';
+  tagright(cleanAddresswappers: CleanedAddressWapper []): Observable<Result> {
+    const request_url = this.address_server + '/address/revise/tag/right';
     const body = {
-      'fullAddressList': fullAddressList
+      'dataList': cleanAddresswappers
+    };
+    return this.http.post<Result>(request_url, body);
+  }
+
+
+  /**
+   * 重新清洗该地址信息
+   * @param {CleanedAddressWapper} cleanAddresswapper
+   * @returns {Observable<Result>}
+   */
+  recompute(cleanAddresswappers: CleanedAddressWapper []): Observable<Result> {
+    const request_url = this.address_server + '/address/revise/reCompute/byAddress';
+    const dataList = [];
+    for (const cleanAddresswapper of cleanAddresswappers) {
+      dataList.push(cleanAddresswapper.fullAddress);
+    }
+    const body = {
+      'dataList': dataList
     };
     return this.http.post<Result>(request_url, body);
   }
@@ -50,8 +69,3 @@ export class AddressService implements OnInit {
 
 }
 
-
-export const CLEANEDADDRESS_DATA: CleanedAddressWapper[] = [
-  {id: '1', right: 1, tag: 'Hydrogen', fullAddress: 'dsf', address: null},
-  {id: '2', right: 1, tag: 'Hydrogen', fullAddress: 'dfs', address: null}
-];
